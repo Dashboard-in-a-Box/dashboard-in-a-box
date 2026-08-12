@@ -1,4 +1,5 @@
 # Dashboard in a Box
+[🇮🇱 עברית](README.he.md) | 🇬🇧 English
 
 **Management Dashboards & Command Centers**
 
