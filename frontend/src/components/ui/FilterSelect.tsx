@@ -19,6 +19,7 @@ function FilterSelect({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       className="
+        w-full 
         rounded-lg
         border
         border-slate-300
@@ -30,6 +31,10 @@ function FilterSelect({
         outline-none
         transition
         focus:border-slate-500
+        dark:border-slate-700
+        dark:bg-slate-900
+        dark:text-slate-100
+        sm:w-auto
       "
     >
       {options.map((option) => (

@@ -8,17 +8,17 @@ type DashboardLayoutProps = {
 
 function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
       <Sidebar />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <Header />
 
-       <main className="flex-1 p-6 lg:p-8">
-        <div className="mx-auto w-full max-w-7xl">
-          {children}
-        </div>
-      </main>
+        <main className="flex-1 bg-slate-50 p-4 dark:bg-slate-950 sm:p-6 lg:p-8">
+          <div className="mx-auto w-full max-w-7xl">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   )

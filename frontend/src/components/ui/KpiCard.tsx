@@ -13,16 +13,16 @@ function KpiCard({
 }: KpiCardProps) {
   return (
     <Card>
-      <p className="text-sm font-medium text-slate-500">
+      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
         {title}
       </p>
 
-      <p className="mt-2 text-2xl font-semibold text-slate-900">
+      <p className="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">ד
         {value}
       </p>
 
       {description && (
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           {description}
         </p>
       )}

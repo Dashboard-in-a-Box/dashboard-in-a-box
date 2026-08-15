@@ -6,10 +6,18 @@ import FilterSelect from '../components/ui/FilterSelect'
 import DataTable from '../components/ui/DataTable'
 import Card from '../components/ui/Card'
 import SimpleBarChart from '../components/ui/SimpleBarChart'
+import Input from '../components/ui/Input'
+import Button from '../components/ui/Button'
+import Modal from '../components/ui/Modal'
+import Notification from '../components/ui/Notification'
+import ThemeToggle from '../components/ui/ThemeToggle'
 
 function DashboardPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [exampleName, setExampleName] = useState('')
+  const [notificationVisible, setNotificationVisible] = useState(false)
   const columns = [
     { key: 'name', header: 'Name' },
     { key: 'status', header: 'Status' },
@@ -45,7 +53,9 @@ function DashboardPage() {
         title="Dashboard"
         description="Overview of your management workspace."
       />
-
+<div className="flex justify-end">
+  <ThemeToggle />
+</div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           title="Total Items"
@@ -94,12 +104,68 @@ function DashboardPage() {
       </div>
       <DataTable columns={columns} data={data} />
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-slate-900">
-          Example Chart
-        </h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      Example Chart
+    </h2>
 
         <SimpleBarChart data={chartData} />
       </Card>
+      <Card>
+  <div className="flex items-center justify-between gap-4">
+    <div>
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+        Form & Modal
+      </h2>
+
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        Example reusable form controls.
+      </p>
+    </div>
+
+    <Button onClick={() => setIsModalOpen(true)}>
+      Open Modal
+    </Button>
+  </div>
+</Card>
+
+<Modal
+  open={isModalOpen}
+  title="Example Form"
+  onClose={() => setIsModalOpen(false)}
+>
+  <div className="space-y-4">
+    <Input
+      label="Name"
+      value={exampleName}
+      onChange={setExampleName}
+      placeholder="Enter a name"
+    />
+
+    <div className="flex justify-end gap-2">
+      <Button
+        type="button"
+        onClick={() => setIsModalOpen(false)}
+        className="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+      >
+        Cancel
+      </Button>
+
+     <Button
+  onClick={() => {
+    setIsModalOpen(false)
+    setNotificationVisible(true)
+  }}
+>
+  Save
+</Button>
+    </div>
+  </div>
+</Modal>
+  <Notification
+    message="Changes saved successfully."
+    visible={notificationVisible}
+    onClose={() => setNotificationVisible(false)}
+  />
     </div>
   )
 }
