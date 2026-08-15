@@ -3,7 +3,7 @@ function Header() {
     <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-6 dark:border-slate-800 dark:bg-slate-900">
       <div>
         <span className="text-sm text-slate-500 dark:text-slate-400">
-          Management Dashboard
+          Operations Control Tower
         </span>
       </div>
 
