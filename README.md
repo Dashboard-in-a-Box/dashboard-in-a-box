@@ -1,88 +1,251 @@
 # Dashboard in a Box
+
 [🇮🇱 עברית](README.he.md) | 🇬🇧 English
 
 **Management Dashboards & Command Centers**
 
 > Turn scattered information and complex workflows into clear, actionable management systems.
 
-## Overview
+---
 
-**Dashboard in a Box** is a portfolio and development project focused on building management dashboards, internal management interfaces, and command centers.
+## Featured Portfolio Project — Operations Control Tower
 
-The goal is to create a management layer that connects information and workflows from existing tools and presents them as one clear operational picture.
+**Operations Control Tower** is a full-stack management dashboard designed to give managers a clear operational picture across projects, tasks, deadlines, priorities, and issues.
 
-Rather than replacing the systems an organization already uses, Dashboard in a Box is designed to bring together scattered information, processes, tasks, and statuses so managers can understand what is happening, identify what requires attention, and make better-informed decisions.
+Instead of replacing the tools teams already use, it acts as a **management layer above existing systems**, bringing operational information together into one focused view.
+
+The current portfolio version is built with:
+
+**React + TypeScript + Tailwind CSS → ASP.NET Core Web API → Supabase PostgreSQL**
+
+---
 
 ## The Problem
 
-Organizations often already have the information they need — but that information is scattered across:
+Organizations often already have the information they need, but that information is scattered across:
 
 * Excel and Google Sheets
 * Documents and local files
 * Email
+* Calendars
 * Cloud applications
-* Operational systems
-* Inventory, billing, and other business systems
+* Project-management tools
+* Operational and support systems
 
-This creates fragmented workflows, manual tracking, limited visibility, and difficulty seeing the bigger picture.
+This creates fragmented workflows, manual tracking, limited visibility, and difficulty understanding the bigger picture.
 
 **The challenge is not simply collecting more data. It is turning existing information into a clear management picture.**
 
-## What I Build
+---
 
-Dashboard in a Box focuses on three types of management systems:
+## The Solution
 
-### Management Dashboards
+Dashboard in a Box creates a management layer that connects information and workflows from existing tools and presents them as one clear operational picture.
 
-Clear operational views built around KPIs, charts, tables, filters, trends, reports, and alerts.
+The goal is to help managers quickly understand:
 
-### Management Interfaces
+* What is happening?
+* What requires attention?
+* What is overdue?
+* Who owns each task?
+* Where did the information come from?
+* How current is the information?
 
-Internal systems for managing information and workflows, including forms, tasks, statuses, documents, users, and roles.
+The system is designed to complement existing tools rather than replace them.
 
-### Command Centers
+---
 
-Integrated management environments combining:
+## Operations Control Tower — Current Features
 
-**Dashboard + Data + Workflow + Tasks + Alerts**
+### Management Dashboard
 
-The goal is to connect:
+* Operational KPI overview
 
-**Information → Process → Decision → Action**
+  * Active Projects
+  * Open Tasks
+  * Overdue Tasks
+  * Critical Issues
+* Critical Attention view
+* Project Status overview
+* Tasks by Status visualization
 
-## Architecture Concept
+### Operational Tasks
 
-Dashboard in a Box is built around a reusable **Dashboard Engine**.
+* Tasks table
+* Project
+* Owner
+* Status
+* Priority
+* Due date
+* Source system
+* Last synchronization time
 
-The same core technology and UI foundation can support multiple management use cases:
+### Search & Filtering
 
-```text
-                    Dashboard Engine
-                           │
-             ┌─────────────┼─────────────┐
-             │             │             │
-             ▼             ▼             ▼
-        Operations      Business      Education
-       Command Center   Management    Management
+* Free-text task search
+* Status filtering
+* Dashboard updates based on filtered data
+
+### Task Details
+
+* Detailed task view
+* Source information
+* Last Sync information
+* `Open in Source` demo interaction
+
+### Full-Stack Capabilities
+
+* ASP.NET Core Web API
+* Supabase PostgreSQL persistence
+* Entity Framework Core
+* Projects API
+* Tasks API
+* Frontend data loading through the backend
+* Loading state
+* Error state
+
+### UI / UX
+
+* Responsive dashboard layout
+* Reusable UI components
+* KPI cards
+* Charts
+* Tables
+* Forms and inputs
+* Modal interactions
+* Notifications
+* Light Mode
+* Dark Mode
+
+---
+
+## Screenshots
+
+### Dashboard Overview — Light Mode
+
+A high-level operational view with KPIs, critical attention items, project status, and task monitoring.
+
+![Operations Control Tower — Dashboard Light Mode](docs/screenshots/operations-dashboard-light.png)
+
+### Operational Tasks
+
+Search, filter, and review operational tasks by project, owner, status, priority, and due date.
+
+![Operations Control Tower — Operational Tasks](docs/screenshots/operations-tasks.png)
+
+### Task Details
+
+Detailed task information including project, owner, status, priority, due date, source system, and last synchronization time.
+
+![Operations Control Tower — Task Details](docs/screenshots/operations-task-details.png)
+
+### Dashboard Overview — Dark Mode
+
+The same management experience is available in a fully supported dark theme.
+
+![Operations Control Tower — Dashboard Dark Mode](docs/screenshots/operations-dashboard-dark.png)
+
+### Project Status — Dark Mode
+
+Project progress and operational health with task-status visualization.
+
+![Operations Control Tower — Project Status Dark Mode](docs/screenshots/operations-project-status-dark.png)
+
+---
+
+## Architecture
+
+### Current Architecture
+
+```mermaid
+flowchart TD
+    UI["Operations Control Tower<br/>React + TypeScript + Tailwind CSS"]
+    API["ASP.NET Core Web API<br/>Controllers + Entity Framework Core"]
+    DB["Supabase PostgreSQL<br/>operations_projects<br/>operations_tasks"]
+
+    UI -->|"HTTP / JSON"| API
+    API --> DB
 ```
 
-This approach follows a simple principle:
+The frontend communicates with the ASP.NET Core API rather than accessing Supabase directly.
+
+This keeps application logic centralized and provides a clean integration layer for future external data sources.
+
+### Future Integration Direction
+
+```mermaid
+flowchart LR
+    Excel["Excel / CSV"]
+    Sheets["Google Sheets"]
+    Calendar["Calendar"]
+    Jira["Jira / Planner"]
+    Email["Email"]
+    Support["Support Systems"]
+
+    API["ASP.NET Core<br/>Integration Layer"]
+    DB["Supabase<br/>PostgreSQL"]
+    Dashboard["Operations<br/>Control Tower"]
+
+    Excel --> API
+    Sheets --> API
+    Calendar --> API
+    Jira --> API
+    Email --> API
+    Support --> API
+
+    API --> DB
+    API --> Dashboard
+```
+
+These integrations represent the intended architecture direction and are **not implemented yet**.
+
+---
+
+## Technical Decisions
+
+### Backend-first architecture
+
+React communicates with ASP.NET Core rather than connecting directly to Supabase.
+
+This keeps business logic and data access centralized and creates a natural integration point for future external systems.
+
+### PostgreSQL via Supabase
+
+Supabase provides a managed PostgreSQL environment while preserving a standard relational database architecture.
+
+The current database contains:
+
+* `operations_projects`
+* `operations_tasks`
+
+### Management layer, not system replacement
+
+Operations Control Tower is designed to sit above existing operational tools.
+
+The objective is not to recreate Jira, Planner, Excel, support systems, or other source applications, but to provide managers with a consolidated operational view.
+
+### Source-aware data model
+
+Tasks include:
+
+* `Source`
+* `Last Sync`
+
+These fields are intentional. In a future multi-system environment, managers need to know both where information originated and how current it is.
+
+### No artificial CRUD
+
+Full CRUD and `Add Task` were intentionally not added simply to demonstrate technical functionality.
+
+Features are added when they support the management use case.
+
+### Reusable Dashboard Engine
+
+The UI foundation and architectural patterns are designed to support multiple management use cases without rebuilding the entire system for each project.
 
 **One Engine → Multiple Management Use Cases**
 
-## Portfolio Use Cases
-
-### Operations Control Tower
-
-An operations management system for projects, tasks, employees, deadlines, issues, SLA tracking, alerts, and activity history.
-
-### School Management Command Center
-
-A management layer for school organizational activity that is not adequately captured by day-to-day reporting systems.
-
-It connects programs, meetings, decisions, tasks, documents, letters, follow-ups, and updates into a searchable management history.
-
-Additional use cases will be developed on top of the same Dashboard Engine.
+---
 
 ## Tech Stack
 
@@ -95,66 +258,188 @@ Additional use cases will be developed on top of the same Dashboard Engine.
 ### Backend
 
 * ASP.NET Core Web API
+* Entity Framework Core
+* Npgsql
 
 ### Database
 
-* SQL Server or PostgreSQL
+* Supabase
+* PostgreSQL
 
-### Planned Capabilities
+---
 
-* Responsive dashboard layout
-* Reusable UI components
-* Charts and KPI cards
-* Tables, search and filtering
-* Forms and modals
-* Notifications and alerts
-* Authentication
-* Role-based access
-* API integration
-* Workflow management
+## API
+
+The current backend exposes:
+
+```text
+GET /api/projects
+GET /api/tasks
+```
+
+During local development, the API currently runs at:
+
+```text
+http://localhost:5077
+```
+
+The frontend runs at:
+
+```text
+http://localhost:5173
+```
+
+---
 
 ## Repository Structure
 
 ```text
 dashboard-in-a-box/
 ├── frontend/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       └── types/
+│
 ├── backend/
+│   ├── Controllers/
+│   ├── Data/
+│   ├── Models/
+│   └── Program.cs
+│
 ├── docs/
-└── README.md
+│   └── screenshots/
+├── README.md
+├── README.he.md
+└── .gitignore
 ```
 
-## Roadmap
+---
 
-### Phase 1 — Foundation
+## Running Locally
 
-* [ ] Build the Dashboard Engine
-* [ ] Create the core layout
-* [ ] Build reusable UI components
-* [ ] Add charts, tables, filters and forms
+### Prerequisites
 
-### Phase 2 — Full Stack
+* Node.js
+* .NET SDK
+* Access to the configured PostgreSQL database
 
-* [ ] Build the ASP.NET Core API
-* [ ] Add database integration
-* [ ] Connect frontend and backend
-* [ ] Implement basic CRUD operations
+### Backend
 
-### Phase 3 — Management Use Cases
+From the `backend` directory:
 
-* [ ] Operations Control Tower
-* [ ] School Management Command Center
-* [ ] Additional management dashboard demos
+```bash
+dotnet run
+```
 
-### Phase 4 — Portfolio
+The database connection string is stored using **.NET User Secrets** and must not be committed to Git.
 
-* [ ] Architecture documentation
-* [ ] Screenshots
-* [ ] Live demos
-* [ ] Technical decisions
-* [ ] Portfolio website
+### Frontend
+
+From the `frontend` directory:
+
+```bash
+npm install
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Known Limitations
+
+This portfolio version focuses on the management dashboard experience and the core full-stack architecture.
+
+Current limitations:
+
+* No authentication or role-based access yet
+* No live integrations with Jira, Excel, Planner, Calendar, Email, or support systems
+* `Open in Source` is currently a demo interaction
+* API configuration is currently local-development based
+* No public deployment yet
+* No automated refresh or synchronization process
+* No pagination for large task datasets
+* No activity timeline or audit history
+
+---
+
+## Dashboard in a Box
+
+Operations Control Tower is the primary portfolio use case, but it is built on a broader concept.
+
+Dashboard in a Box focuses on three types of systems:
+
+### Management Dashboards
+
+Operational views built around KPIs, charts, tables, filters, trends, reports, and alerts.
+
+### Management Interfaces
+
+Internal systems for managing information, processes, tasks, statuses, and organizational workflows.
+
+### Workflow & Command Centers
+
+Management environments that connect:
+
+**Information → Process → Decision → Action**
+
+---
+
+## Portfolio Use Cases
+
+### Operations Control Tower
+
+**Primary portfolio project**
+
+A management layer for operational projects, tasks, deadlines, priorities, issues, and source-system visibility.
+
+### School Management Command Center
+
+**Differentiating portfolio use case**
+
+A management layer for organizational activity that is not adequately captured by day-to-day school reporting systems.
+
+It is designed to connect programs, meetings, decisions, tasks, documents, letters, and follow-ups into a searchable management history.
+
+Additional use cases can be built on the same Dashboard Engine.
+
+---
 
 ## Project Status
 
-🚧 **Active Development**
+### Completed
 
-Dashboard in a Box is currently being developed as a reusable foundation for multiple management dashboard and command center use cases.
+* [x] Business definition
+* [x] Repository foundation
+* [x] Dashboard Engine skeleton
+* [x] Reusable UI system
+* [x] Operations Control Tower dashboard
+* [x] ASP.NET Core Web API
+* [x] Supabase PostgreSQL database
+* [x] Backend → Database integration
+* [x] Frontend → Backend integration
+* [x] Loading and error states
+* [x] Light and Dark Mode
+
+### Portfolio Packaging
+
+* [x] Feature documentation
+* [x] Architecture documentation
+* [x] Technical decisions
+* [x] Known limitations
+* [x] Screenshots
+* [ ] Public deployment
+
+---
+
+## Core Idea
+
+> I do not replace the tools an organization already uses.
+
+> I build a management layer that connects existing information, turns it into a clear visual picture, and helps managers see the bigger picture and make better-informed decisions.
