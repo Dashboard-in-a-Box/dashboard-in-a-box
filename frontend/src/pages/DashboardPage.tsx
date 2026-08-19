@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PageHeader from '../components/ui/PageHeader'
 import KpiCard from '../components/ui/KpiCard'
 import SearchInput from '../components/ui/SearchInput'
@@ -12,17 +12,58 @@ import Notification from '../components/ui/Notification'
 import ThemeToggle from '../components/ui/ThemeToggle'
 
 import {
-  operationsProjects,
-  operationsTasks,
-} from '../data/operationsData'
+  getProjects,
+  getTasks,
+} from '../services/operationsApi'
+
+import type {
+  OperationsProject,
+  OperationsTask,
+} from '../types/operations'
 
 function DashboardPage() {
+  const [operationsProjects, setOperationsProjects] =
+    useState<OperationsProject[]>([])
+
+  const [operationsTasks, setOperationsTasks] =
+    useState<OperationsTask[]>([])
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null)
   const [notificationVisible, setNotificationVisible] = useState(false)
-  const selectedTask = operationsTasks.find((task) => task.id === selectedTaskId)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setIsLoading(true)
+
+        const [projects, tasks] = await Promise.all([
+          getProjects(),
+          getTasks(),
+        ])
+
+        setOperationsProjects(projects)
+        setOperationsTasks(tasks)
+        setLoadError(null)
+      } catch (error) {
+        console.error('Failed to load operations data:', error)
+        setLoadError('Unable to load operations data.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadData()
+  }, [])
+
+  const selectedTask = operationsTasks.find(
+    (task) => task.id === selectedTaskId
+  )
 
   const columns = [
     { key: 'title', header: 'Task' },
@@ -103,6 +144,22 @@ function DashboardPage() {
       ).length,
     },
   ]
+
+  if (isLoading) {
+    return (
+      <div className="p-6 text-slate-600 dark:text-slate-300">
+        Loading operations data...
+      </div>
+    )
+  }
+
+  if (loadError) {
+    return (
+      <div className="p-6 text-red-600 dark:text-red-400">
+        {loadError}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -302,6 +359,7 @@ function DashboardPage() {
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 Task
               </p>
+
               <p className="font-medium text-slate-900 dark:text-white">
                 {selectedTask.title}
               </p>
@@ -312,6 +370,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Project
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.project}
                 </p>
@@ -321,6 +380,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Owner
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.owner}
                 </p>
@@ -330,6 +390,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Status
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.status}
                 </p>
@@ -339,6 +400,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Priority
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.priority}
                 </p>
@@ -348,6 +410,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Due Date
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.dueDate}
                 </p>
@@ -357,6 +420,7 @@ function DashboardPage() {
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   Source
                 </p>
+
                 <p className="text-slate-900 dark:text-white">
                   {selectedTask.source}
                 </p>
@@ -367,6 +431,7 @@ function DashboardPage() {
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 Last Sync
               </p>
+
               <p className="text-slate-900 dark:text-white">
                 {selectedTask.lastSync}
               </p>
